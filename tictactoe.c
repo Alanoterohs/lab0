@@ -25,8 +25,25 @@ char get_winner(char board[BOARD_SIZE][BOARD_SIZE])
 {
     board = board;
     char winner = '-';
+    bool found = true;
 
-    // IMPLEMENTAR
+    unsigned int i = 0;
+    while (i < BOARD_SIZE && found) {
+      if (board[i][0] == board[i][1] && board[i][1] == board[i][2]  && board[0][i] != '-') {
+        winner = board[i][0];
+        found = false;
+      } else if(board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[0][i] != '-') {
+        winner = board[0][i];
+        found = false;
+      } else if(board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
+        winner = board[0][0];
+        found = false;
+      } else if(board[0][2] == board[1][1] && board[1][1] == board[2][0]) {
+        winner = board[0][2];
+        found = false;
+      }
+      i++;
+    }
 
     return winner;
 }
@@ -34,15 +51,27 @@ char get_winner(char board[BOARD_SIZE][BOARD_SIZE])
 bool has_free_cell(char board[BOARD_SIZE][BOARD_SIZE])
 {
     board = board;
+    bool mid_dash_free = false;
 
-    // IMPLEMENTAR
+    for (unsigned int row = 0; row < BOARD_SIZE; ++row) {
+        for (unsigned int column = 0; column < BOARD_SIZE; ++column) {
+          if (board[row][column] == '-') {
+            mid_dash_free = true;
+          } else {
+            continue;
+          }
+        }
+    }
 
-    return true;
+    if (mid_dash_free) {
+      return true;
+    } else {
+      return false;
+    }
 }
 
 int main(void)
 {
-    printf("TicTacToe [InCoMpLeTo :'(]\n");
 
     char board[BOARD_SIZE][BOARD_SIZE] = {
         { '-', '-', '-' },
@@ -69,6 +98,7 @@ int main(void)
                 board[row][colum] = turn;
                 turn = turn == 'X' ? 'O' : 'X';
                 winner = get_winner(board);
+                printf("winner: %c \n", winner);
             } else {
                 printf("\nCelda ocupada!\n");
             }
